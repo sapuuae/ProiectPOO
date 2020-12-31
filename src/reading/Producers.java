@@ -8,6 +8,15 @@ public class Producers {
     private Integer maxDistributors;
     private Double priceKW;
     private Integer energyPerDistributor;
+    private Integer actualDistributors;
+
+    public Integer getActualDistributors() {
+        return actualDistributors;
+    }
+
+    public void setActualDistributors(Integer actualDistributors) {
+        this.actualDistributors = actualDistributors;
+    }
 
     public Integer getId() {
         return id;

@@ -81,6 +81,24 @@ public final class ElectricConsumers extends Consumers {
              */
             Double lastBillPenalty = (double) Math.round(
                     Math.floor(Constants.getBILLDIFF() * this.lateBill));
+            if (this.oldDistributor != null) {
+                if (this.oldDistributor == this.assignedDistributor) {
+                    if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
+                        this.isBankrupt = true;
+                        this.remainedContractMonths = 0;
+                    } else {
+                        this.setInitialBudget(this.getInitialBudget() - lastBillPenalty
+                        - this.price);
+                        this.assignedDistributor.setInitialBudget(
+                                this.assignedDistributor.getInitialBudget() + lastBillPenalty
+                                        + this.price);
+                        this.remainedContractMonths--;
+                        this.latePayment = 0;
+                    }
+                } else {
+
+                }
+            }
             if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
                 /*
                 Can't afford to pay.
@@ -91,6 +109,7 @@ public final class ElectricConsumers extends Consumers {
                 /*
                 He has debt to the old distributor, so pay last bill to the old one.
                  */
+
                 this.oldDistributor.setInitialBudget(this.oldDistributor.getInitialBudget()
                         + lastBillPenalty);
                 this.assignedDistributor.setInitialBudget(
