@@ -4,6 +4,8 @@ import observer.Subject;
 import reading.CostsChanges;
 import reading.ProducerChanges;
 import reading.Producers;
+import strategies.ChooseProducerStrategy;
+import strategies.ChooseProducerStrategyFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -126,9 +128,29 @@ public final class Tasks {
     public void chooseProducers(final ArrayList<WorkingDistributors> distributorsArrayList,
                                 final ArrayList<Producers> producersArrayList) {
             for (WorkingDistributors d : distributorsArrayList) {
-
+                ChooseProducerStrategy strategy = ChooseProducerStrategyFactory.createStrategy(
+                        d.getProducerStrategy().label, producersArrayList);
+                strategy.chooseProducer();
+                d.setTotalEnergyNow(0);
+                d.getActualEnergyList().clear();
+                for (Producers p : producersArrayList) {
+                    if (d.getTotalEnergyNow() < d.getEnergyNeededKW()) {
+                        if (p.getActualDistributors() < p.getMaxDistributors()) {
+                            d.setTotalEnergyNow(d.getTotalEnergyNow() + p.getEnergyPerDistributor());
+                            d.getActualEnergyList().add(new EnergyAndPrice(
+                                    p.getEnergyPerDistributor(), p.getPriceKW()));
+                            p.setActualDistributors(p.getActualDistributors() + 1);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                double cost = 0.0;
+                for (EnergyAndPrice energy : d.getActualEnergyList()) {
+                    cost += energy.getEnergy() * energy.getPrice();
+                }
+                d.setProductionCost((double) Math.round(Math.floor(cost / 10)));
+                d.updateContractCost();
             }
-        
     }
-
 }

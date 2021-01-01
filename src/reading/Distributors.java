@@ -1,6 +1,9 @@
 package reading;
 
+import base.EnergyAndPrice;
 import strategies.EnergyChoiceStrategyType;
+
+import java.util.ArrayList;
 
 public class Distributors {
     private Integer id;
@@ -14,6 +17,24 @@ public class Distributors {
     private Double totalCosts = 0.0;
     private Integer energyNeededKW;
     private EnergyChoiceStrategyType producerStrategy;
+    private ArrayList<EnergyAndPrice> actualEnergyList = new ArrayList<>();
+    private Integer totalEnergyNow;
+
+    public Integer getTotalEnergyNow() {
+        return totalEnergyNow;
+    }
+
+    public void setTotalEnergyNow(Integer totalEnergyNow) {
+        this.totalEnergyNow = totalEnergyNow;
+    }
+
+    public ArrayList<EnergyAndPrice> getActualEnergyList() {
+        return actualEnergyList;
+    }
+
+    public void setActualEnergyList(ArrayList<EnergyAndPrice> actualEnergyList) {
+        this.actualEnergyList = actualEnergyList;
+    }
 
     public EnergyChoiceStrategyType getProducerStrategy() {
         return producerStrategy;
