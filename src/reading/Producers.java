@@ -3,13 +3,20 @@ package reading;
 import entities.EnergyType;
 import observer.Observer;
 
+import java.util.ArrayList;
+
 public class Producers extends Observer{
     private Integer id;
     private EnergyType energyType;
     private Integer maxDistributors;
     private Double priceKW;
     private Integer energyPerDistributor;
-    private Integer actualDistributors;
+    private Integer actualDistributors = 0;
+    private final ArrayList<DistributorStats> monthlyStats = new ArrayList<>();
+
+    public ArrayList<DistributorStats> getMonthlyStats() {
+        return monthlyStats;
+    }
 
     public Integer getActualDistributors() {
         return actualDistributors;

@@ -11,6 +11,7 @@ public final class MonthlyUpdates {
     private ArrayList<ProducerChanges> producerChanges;
 
 
+
     public ArrayList<ProducerChanges> getProducerChanges() {
         return producerChanges;
     }

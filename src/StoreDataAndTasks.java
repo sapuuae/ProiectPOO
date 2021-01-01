@@ -1,12 +1,10 @@
+import base.ProducersTasks;
 import base.Tasks;
 import base.ElectricConsumers;
 import base.WorkingDistributors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import factory.CreateElectricConsumers;
-import reading.Consumers;
-import reading.Input;
-import reading.MonthlyUpdates;
-import reading.Producers;
+import reading.*;
 import writing.WriteInJson;
 
 import java.io.File;
@@ -27,42 +25,50 @@ public final class StoreDataAndTasks {
     public void checkFile(final File in, final File out) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Input input =  (objectMapper.readValue(in, Input.class));
-        System.out.println(input.getInitialData().getDistributors());
+
         ArrayList<Producers> producersArrayList = input.getInitialData().getProducers();
-//        ArrayList<Consumers> consumersArrayList = input.getInitialData().getConsumers();
-//        ArrayList<MonthlyUpdates> monthlyUpdates = input.getMonthlyUpdates();
-//        ArrayList<ElectricConsumers> consumersList = new ArrayList<>();
-//        CreateElectricConsumers create = new
-//                CreateElectricConsumers(consumersArrayList, monthlyUpdates);
-//        create.createElectricConsumers(consumersList);
-//
-//        /*
-//        First step of the game.
-//         */
-//
-//        ArrayList<WorkingDistributors> initialDistributors =
-//                input.getInitialData().getDistributors();
-//
-//        initialDistributors.sort(Comparator.comparing(WorkingDistributors::getContractCost));
-//        Tasks executeTasks = Tasks.getInstance();
-//        executeTasks.updateConsumer(consumersList, initialDistributors);
-//        executeTasks.updateDistributor(initialDistributors);
-//
-//        /*
-//        Iterate through numberOfTurns (size of monthlyUpdates)
-//         */
-//        for (MonthlyUpdates m : monthlyUpdates) {
-//            executeTasks.monthlyUpdate(initialDistributors, consumersList,
-//                    m.getConsumersToWork(), m.getCostsChanges(), producersArrayList,
-//                    m.getProducerChanges());
-//            executeTasks.updateConsumer(consumersList, initialDistributors);
-//            executeTasks.updateDistributor(initialDistributors);
-//        }
-//
-//        /*
-//        Write in file.
-//         */
-//        WriteInJson write = new WriteInJson(consumersList, initialDistributors);
-//        write.writeInFile(out);
+        ArrayList<Consumers> consumersArrayList = input.getInitialData().getConsumers();
+        ArrayList<MonthlyUpdates> monthlyUpdates = input.getMonthlyUpdates();
+        ArrayList<ElectricConsumers> consumersList = new ArrayList<>();
+        CreateElectricConsumers create = new
+                CreateElectricConsumers(consumersArrayList, monthlyUpdates);
+        create.createElectricConsumers(consumersList);
+
+
+        for (int i = 1; i <= input.getNumberOfTurns(); i++) {
+            for (Producers p : producersArrayList) {
+                p.getMonthlyStats().add(new DistributorStats(i));
+            }
+        }
+        /*
+        First step of the game.
+         */
+
+        ArrayList<WorkingDistributors> initialDistributors =
+                input.getInitialData().getDistributors();
+        ProducersTasks tasks = new ProducersTasks();
+        int count = 0;
+        tasks.chooseProducers(initialDistributors, producersArrayList, count++);
+        initialDistributors.sort(Comparator.comparing(WorkingDistributors::getContractCost));
+        Tasks executeTasks = Tasks.getInstance();
+        executeTasks.updateConsumer(consumersList, initialDistributors);
+        executeTasks.updateDistributor(initialDistributors);
+        /*
+        Iterate through numberOfTurns (size of monthlyUpdates)
+         */
+        for (MonthlyUpdates m : monthlyUpdates) {
+            executeTasks.monthlyUpdate(initialDistributors, consumersList,
+                    m.getConsumersToWork(), m.getDistributorChanges());
+            executeTasks.updateConsumer(consumersList, initialDistributors);
+            executeTasks.updateDistributor(initialDistributors);
+            tasks.updateProducers(producersArrayList, m.getProducerChanges());
+            tasks.chooseProducers(initialDistributors, producersArrayList, count++);
+        }
+
+        /*
+        Write in file.
+         */
+        WriteInJson write = new WriteInJson(consumersList, initialDistributors, producersArrayList);
+        write.writeInFile(out);
     }
 }

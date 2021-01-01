@@ -5,6 +5,7 @@ import base.WorkingDistributors;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import reading.Producers;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +15,14 @@ import java.util.Comparator;
 public final class WriteInJson {
     private final ArrayList<ElectricConsumers> electricConsumers;
     private final ArrayList<WorkingDistributors> workingDistributors;
+    private final ArrayList<Producers> producersArrayList;
 
     public WriteInJson(final ArrayList<ElectricConsumers> electricConsumers,
-                       final ArrayList<WorkingDistributors> workingDistributors) {
+                       final ArrayList<WorkingDistributors> workingDistributors,
+                       final ArrayList<Producers> producersArrayList) {
         this.electricConsumers = electricConsumers;
         this.workingDistributors = workingDistributors;
+        this.producersArrayList = producersArrayList;
     }
 
     /**
@@ -31,7 +35,8 @@ public final class WriteInJson {
         workingDistributors.sort(Comparator.comparing(WorkingDistributors::getId));
         ArrayList<DistributorsToWrite> distributors = new ArrayList<>();
         for (WorkingDistributors d : workingDistributors) {
-            Integer number = Math.toIntExact(Math.round(d.getInitialBudget()));
+            Integer finalBudget = Math.toIntExact(Math.round(d.getInitialBudget()));
+            Integer finalContractCost = Math.toIntExact(Math.round(d.getContractCost()));
             ArrayList<ElectricConsumers> distributorsConsumers = d.getDistributorConsumers();
             ArrayList<ConsumersToWriteInDistributors> toWrite = new ArrayList<>();
             for (ElectricConsumers e : distributorsConsumers) {
@@ -39,8 +44,8 @@ public final class WriteInJson {
                 toWrite.add(new ConsumersToWriteInDistributors(e.getId(),
                         priceInt, e.getRemainedContractMonths()));
             }
-            DistributorsToWrite toAdd = new DistributorsToWrite(d.getId(),
-                    number, d.getBankrupt(),
+            DistributorsToWrite toAdd = new DistributorsToWrite(d.getId(), d.getEnergyNeededKW(),
+                    finalContractCost, finalBudget, d.getProducerStrategy().label, d.getBankrupt(),
                     toWrite);
             distributors.add(toAdd);
         }
@@ -50,7 +55,14 @@ public final class WriteInJson {
             consumersToWrite.add(new ConsumersToWrite(c.getId(), c.getBankrupt(), budget));
         }
 
-        WrapperJson wrapper = new WrapperJson(consumersToWrite, distributors);
+        ArrayList<ProducersToWrite> producersToWrite = new ArrayList<>();
+        for (Producers p : producersArrayList) {
+            producersToWrite.add(new ProducersToWrite(p.getId(), p.getMaxDistributors(),
+                    p.getPriceKW(), p.getEnergyType().getLabel(), p.getEnergyPerDistributor(),
+                    p.getMonthlyStats()));
+        }
+
+        WrapperJson wrapper = new WrapperJson(consumersToWrite, distributors, producersToWrite);
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         writer.writeValue(out, wrapper);

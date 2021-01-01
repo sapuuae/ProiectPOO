@@ -36,9 +36,7 @@ public final class Tasks {
     public void monthlyUpdate(final ArrayList<WorkingDistributors> distributorsArrayList,
                               final ArrayList<ElectricConsumers> consumers,
                               final ArrayList<ElectricConsumers> newConsumers,
-                              final ArrayList<CostsChanges> costsChanges,
-                              final ArrayList<Producers> producersArrayList,
-                              final ArrayList<ProducerChanges> producerChanges) {
+                              final ArrayList<CostsChanges> costsChanges) {
         consumers.addAll(newConsumers);
         distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getId));
         for (CostsChanges c : costsChanges) {
@@ -54,12 +52,6 @@ public final class Tasks {
                     + d.getProductionCost() * d.getNumberOfCustomers());
         }
         distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getContractCost));
-        producersArrayList.sort(Comparator.comparing(Producers::getId));
-        Subject subject = new Subject();
-        for (Producers p : producersArrayList) {
-            subject.attach(p);
-        }
-        subject.setState(producerChanges);
     }
 
     /**
@@ -123,34 +115,5 @@ public final class Tasks {
                 d.updateBudget();
             }
         }
-    }
-
-    public void chooseProducers(final ArrayList<WorkingDistributors> distributorsArrayList,
-                                final ArrayList<Producers> producersArrayList) {
-            for (WorkingDistributors d : distributorsArrayList) {
-                ChooseProducerStrategy strategy = ChooseProducerStrategyFactory.createStrategy(
-                        d.getProducerStrategy().label, producersArrayList);
-                strategy.chooseProducer();
-                d.setTotalEnergyNow(0);
-                d.getActualEnergyList().clear();
-                for (Producers p : producersArrayList) {
-                    if (d.getTotalEnergyNow() < d.getEnergyNeededKW()) {
-                        if (p.getActualDistributors() < p.getMaxDistributors()) {
-                            d.setTotalEnergyNow(d.getTotalEnergyNow() + p.getEnergyPerDistributor());
-                            d.getActualEnergyList().add(new EnergyAndPrice(
-                                    p.getEnergyPerDistributor(), p.getPriceKW()));
-                            p.setActualDistributors(p.getActualDistributors() + 1);
-                        }
-                    } else {
-                        break;
-                    }
-                }
-                double cost = 0.0;
-                for (EnergyAndPrice energy : d.getActualEnergyList()) {
-                    cost += energy.getEnergy() * energy.getPrice();
-                }
-                d.setProductionCost((double) Math.round(Math.floor(cost / 10)));
-                d.updateContractCost();
-            }
     }
 }
