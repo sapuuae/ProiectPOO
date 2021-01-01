@@ -6,6 +6,7 @@ import factory.CreateElectricConsumers;
 import reading.Consumers;
 import reading.Input;
 import reading.MonthlyUpdates;
+import reading.Producers;
 import writing.WriteInJson;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public final class StoreDataAndTasks {
         ObjectMapper objectMapper = new ObjectMapper();
         Input input =  (objectMapper.readValue(in, Input.class));
         System.out.println(input.getInitialData().getDistributors());
+        ArrayList<Producers> producersArrayList = input.getInitialData().getProducers();
 //        ArrayList<Consumers> consumersArrayList = input.getInitialData().getConsumers();
 //        ArrayList<MonthlyUpdates> monthlyUpdates = input.getMonthlyUpdates();
 //        ArrayList<ElectricConsumers> consumersList = new ArrayList<>();
@@ -51,7 +53,8 @@ public final class StoreDataAndTasks {
 //         */
 //        for (MonthlyUpdates m : monthlyUpdates) {
 //            executeTasks.monthlyUpdate(initialDistributors, consumersList,
-//                    m.getConsumersToWork(), m.getCostsChanges());
+//                    m.getConsumersToWork(), m.getCostsChanges(), producersArrayList,
+//                    m.getProducerChanges());
 //            executeTasks.updateConsumer(consumersList, initialDistributors);
 //            executeTasks.updateDistributor(initialDistributors);
 //        }

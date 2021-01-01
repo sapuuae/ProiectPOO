@@ -2,25 +2,28 @@ package base;
 
 import reading.Distributors;
 import reading.Constants;
+import reading.Producers;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class WorkingDistributors extends Distributors {
-    private Double infrastructureCost = 0.0;
-    private Double productionCost = 0.0;
     private Double contractCost = 0.0;
     private Integer numberOfCustomers = 0;
-    private Double totalCosts = 0.0;
     private Boolean isBankrupt = false;
     private final ArrayList<ElectricConsumers> distributorConsumers = new ArrayList<>();
+    private final ArrayList<Producers> producersArrayList = new ArrayList<>();
+
+    public final ArrayList<Producers> getProducersArrayList() {
+        return producersArrayList;
+    }
 
     @Override
     public final void setInitialInfrastructureCost(final Double initialInfrastructureCost) {
         super.setInitialInfrastructureCost(initialInfrastructureCost);
         super.setInitialContractCost(initialInfrastructureCost);
-        this.infrastructureCost = initialInfrastructureCost;
-        this.totalCosts = infrastructureCost;
+        this.setInfrastructureCost(initialInfrastructureCost);
+        this.setTotalCosts(getInfrastructureCost());
     }
 
     @Override
@@ -28,24 +31,8 @@ public class WorkingDistributors extends Distributors {
         super.setInitialProductionCost(initialProductionCost);
         super.setInitialContractCost(this.getInitialContractCost()
                 + initialProductionCost + Constants.getPROFIT() * initialProductionCost);
-        this.productionCost = initialProductionCost;
+        this.setProductionCost(initialProductionCost);
         this.contractCost = this.getInitialContractCost();
-    }
-
-    public final Double getInfrastructureCost() {
-        return infrastructureCost;
-    }
-
-    public final void setInfrastructureCost(final Double infrastructureCost) {
-        this.infrastructureCost = infrastructureCost;
-    }
-
-    public final Double getProductionCost() {
-        return productionCost;
-    }
-
-    public final void setProductionCost(final Double productionCost) {
-        this.productionCost = productionCost;
     }
 
     public final Double getContractCost() {
@@ -66,9 +53,10 @@ public class WorkingDistributors extends Distributors {
     public final void updateContractCost() {
         if (this.getNumberOfCustomers() != 0) {
             this.contractCost = (double) Math.round(
-                    Math.floor(this.infrastructureCost / this.numberOfCustomers)
-                            + this.productionCost
-                            + Math.round(Math.floor(Constants.getPROFIT() * this.productionCost)));
+                    Math.floor(this.getInfrastructureCost() / this.numberOfCustomers)
+                            + this.getProductionCost()
+                            + Math.round(Math.floor(Constants.getPROFIT()
+                            * this.getProductionCost())));
             ArrayList<ElectricConsumers> consumersToRemove = new ArrayList<>();
             for (ElectricConsumers c : distributorConsumers) {
                 if (c.getRemainedContractMonths() == 0) {
@@ -80,18 +68,11 @@ public class WorkingDistributors extends Distributors {
                 distributorConsumers.remove(c);
             }
         } else {
-            this.contractCost = this.infrastructureCost + this.productionCost
-                    + Math.round(Math.floor(Constants.getPROFIT() * this.productionCost));
+            this.contractCost = this.getInfrastructureCost() + this.getProductionCost()
+                    + Math.round(Math.floor(Constants.getPROFIT() * this.getProductionCost()));
         }
-        this.totalCosts = this.infrastructureCost + this.productionCost * this.numberOfCustomers;
-    }
-
-    public final Double getTotalCosts() {
-        return totalCosts;
-    }
-
-    public final void setTotalCosts(final Double totalCosts) {
-        this.totalCosts = totalCosts;
+        this.setTotalCosts(this.getInfrastructureCost()
+                + this.getProductionCost() * this.numberOfCustomers);
     }
 
     public final Boolean getBankrupt() {
@@ -107,7 +88,7 @@ public class WorkingDistributors extends Distributors {
      */
     public final void updateBudget() {
         if (numberOfCustomers == 0) {
-            this.setInitialBudget(this.getInitialBudget() - this.infrastructureCost);
+            this.setInitialBudget(this.getInitialBudget() - this.getInfrastructureCost());
         } else {
             this.setInitialBudget(this.getInitialBudget() - this.getTotalCosts());
             try {

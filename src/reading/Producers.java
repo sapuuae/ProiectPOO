@@ -1,8 +1,9 @@
 package reading;
 
 import entities.EnergyType;
+import observer.Observer;
 
-public class Producers {
+public class Producers extends Observer{
     private Integer id;
     private EnergyType energyType;
     private Integer maxDistributors;
@@ -56,5 +57,10 @@ public class Producers {
 
     public void setEnergyPerDistributor(Integer energyPerDistributor) {
         this.energyPerDistributor = energyPerDistributor;
+    }
+
+    @Override
+    public void update(Integer energy) {
+        this.energyPerDistributor = energy;
     }
 }

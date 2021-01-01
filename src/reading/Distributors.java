@@ -7,10 +7,13 @@ public class Distributors {
     private Integer contractLength;
     private Double initialBudget;
     private Double initialInfrastructureCost;
-    private Double initialProductionCost = 0.0;
-    private Double energyNeededKW;
-    private EnergyChoiceStrategyType producerStrategy;
+    private Double initialProductionCost;
     private Double initialContractCost = 0.0;
+    private Double infrastructureCost = 0.0;
+    private Double productionCost = 0.0;
+    private Double totalCosts = 0.0;
+    private Integer energyNeededKW;
+    private EnergyChoiceStrategyType producerStrategy;
 
     public EnergyChoiceStrategyType getProducerStrategy() {
         return producerStrategy;
@@ -18,6 +21,38 @@ public class Distributors {
 
     public void setProducerStrategy(EnergyChoiceStrategyType producerStrategy) {
         this.producerStrategy = producerStrategy;
+    }
+
+    public Integer getEnergyNeededKW() {
+        return energyNeededKW;
+    }
+
+    public void setEnergyNeededKW(Integer energyNeededKW) {
+        this.energyNeededKW = energyNeededKW;
+    }
+
+    public final Double getTotalCosts() {
+        return totalCosts;
+    }
+
+    public final void setTotalCosts(final Double totalCosts) {
+        this.totalCosts = totalCosts;
+    }
+
+    public final Double getProductionCost() {
+        return productionCost;
+    }
+
+    public final void setProductionCost(final Double productionCost) {
+        this.productionCost = productionCost;
+    }
+
+    public final Double getInfrastructureCost() {
+        return infrastructureCost;
+    }
+
+    public final void setInfrastructureCost(final Double infrastructureCost) {
+        this.infrastructureCost = infrastructureCost;
     }
 
     /*
@@ -51,14 +86,6 @@ public class Distributors {
 
     public final Double getInitialInfrastructureCost() {
         return initialInfrastructureCost;
-    }
-
-    public Double getEnergyNeededKW() {
-        return energyNeededKW;
-    }
-
-    public void setEnergyNeededKW(Double energyNeededKW) {
-        this.energyNeededKW = energyNeededKW;
     }
 
     public final Double getInitialProductionCost() {

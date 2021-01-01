@@ -1,6 +1,9 @@
 package base;
 
+import observer.Subject;
 import reading.CostsChanges;
+import reading.ProducerChanges;
+import reading.Producers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +34,9 @@ public final class Tasks {
     public void monthlyUpdate(final ArrayList<WorkingDistributors> distributorsArrayList,
                               final ArrayList<ElectricConsumers> consumers,
                               final ArrayList<ElectricConsumers> newConsumers,
-                              final ArrayList<CostsChanges> costsChanges) {
+                              final ArrayList<CostsChanges> costsChanges,
+                              final ArrayList<Producers> producersArrayList,
+                              final ArrayList<ProducerChanges> producerChanges) {
         consumers.addAll(newConsumers);
         distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getId));
         for (CostsChanges c : costsChanges) {
@@ -40,7 +45,6 @@ public final class Tasks {
              */
             WorkingDistributors currentDistributor = distributorsArrayList.get(c.getId());
             currentDistributor.setInfrastructureCost(c.getInfrastructureCost());
-            currentDistributor.setProductionCost(c.getProductionCost());
         }
         for (WorkingDistributors d : distributorsArrayList) {
             d.updateContractCost();
@@ -48,6 +52,12 @@ public final class Tasks {
                     + d.getProductionCost() * d.getNumberOfCustomers());
         }
         distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getContractCost));
+        producersArrayList.sort(Comparator.comparing(Producers::getId));
+        Subject subject = new Subject();
+        for (Producers p : producersArrayList) {
+            subject.attach(p);
+        }
+        subject.setState(producerChanges);
     }
 
     /**
@@ -111,6 +121,14 @@ public final class Tasks {
                 d.updateBudget();
             }
         }
+    }
+
+    public void chooseProducers(final ArrayList<WorkingDistributors> distributorsArrayList,
+                                final ArrayList<Producers> producersArrayList) {
+            for (WorkingDistributors d : distributorsArrayList) {
+
+            }
+        
     }
 
 }
