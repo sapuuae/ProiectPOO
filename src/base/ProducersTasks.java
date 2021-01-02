@@ -62,7 +62,9 @@ public class ProducersTasks {
                 cost += energy.getEnergy() * energy.getPrice();
             }
             d.setProductionCost((double) Math.round(Math.floor(cost / 10)));
-            d.updateContractCost();
+            if (month == 0) {
+                d.updateContractCost();
+            }
         }
     }
 }
