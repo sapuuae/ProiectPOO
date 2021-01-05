@@ -1,5 +1,6 @@
 package reading;
 
+import base.WorkingDistributors;
 import entities.EnergyType;
 import observer.Observer;
 
@@ -67,7 +68,14 @@ public class Producers extends Observer{
     }
 
     @Override
-    public void update(Integer energy) {
+    public void update(Integer energy, ArrayList<WorkingDistributors> distributorsArrayList) {
         this.energyPerDistributor = energy;
+        for (DistributorStats s : monthlyStats) {
+            ArrayList<Integer> idsArray = s.getDistributorsIds();
+            for (Integer i : idsArray) {
+                distributorsArrayList.get(i).setNeedToUpdate(true);
+            }
+        }
+        actualDistributors = 0;
     }
 }

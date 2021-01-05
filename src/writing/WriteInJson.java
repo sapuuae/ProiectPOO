@@ -5,6 +5,7 @@ import base.WorkingDistributors;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import reading.DistributorStats;
 import reading.Producers;
 
 import java.io.File;
@@ -57,9 +58,13 @@ public final class WriteInJson {
 
         ArrayList<ProducersToWrite> producersToWrite = new ArrayList<>();
         for (Producers p : producersArrayList) {
+            ArrayList<DistributorStats> statsToAdd = new ArrayList<>();
+            for (int i = 1; i < p.getMonthlyStats().size(); i++) {
+                statsToAdd.add(p.getMonthlyStats().get(i));
+            }
             producersToWrite.add(new ProducersToWrite(p.getId(), p.getMaxDistributors(),
                     p.getPriceKW(), p.getEnergyType().getLabel(), p.getEnergyPerDistributor(),
-                    p.getMonthlyStats()));
+                    statsToAdd));
         }
 
         WrapperJson wrapper = new WrapperJson(consumersToWrite, distributors, producersToWrite);

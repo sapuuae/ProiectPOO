@@ -14,10 +14,10 @@ public final class Main {
      * @throws Exception might error when reading/writing/opening files, parsing JSON
      */
     public static void main(final String[] args) throws Exception {
-//        File in = new File(args[0]);
-        File in = new File("complex_2.json");
-        File out = new File("out.json");
-//        File out = new File(args[1]);
+        File in = new File(args[0]);
+//        File in = new File("complex_4.json");
+//        File out = new File("out.json");
+        File out = new File(args[1]);
         StoreDataAndTasks storeDataAndTasks = new StoreDataAndTasks();
         storeDataAndTasks.checkFile(in, out);
     }

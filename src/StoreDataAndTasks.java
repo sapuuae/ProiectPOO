@@ -35,7 +35,8 @@ public final class StoreDataAndTasks {
         create.createElectricConsumers(consumersList);
 
 
-        for (int i = 1; i <= input.getNumberOfTurns(); i++) {
+        for (int i = 0; i <= input.getNumberOfTurns(); i++) {
+
             for (Producers p : producersArrayList) {
                 p.getMonthlyStats().add(new DistributorStats(i));
             }
@@ -61,7 +62,7 @@ public final class StoreDataAndTasks {
                     m.getConsumersToWork(), m.getDistributorChanges());
             executeTasks.updateConsumer(consumersList, initialDistributors);
             executeTasks.updateDistributor(initialDistributors);
-            tasks.updateProducers(producersArrayList, m.getProducerChanges());
+            tasks.updateProducers(producersArrayList, m.getProducerChanges(), initialDistributors);
             tasks.chooseProducers(initialDistributors, producersArrayList, count++);
         }
 

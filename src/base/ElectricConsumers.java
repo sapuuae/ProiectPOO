@@ -61,6 +61,21 @@ public final class ElectricConsumers extends Consumers {
         this.oldDistributor = oldDistributor;
     }
 
+    public void checkThePayment(Double lastBillPenalty) {
+        if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
+            this.isBankrupt = true;
+            this.remainedContractMonths = 0;
+        } else {
+            this.setInitialBudget(this.getInitialBudget() - lastBillPenalty
+                    - this.price);
+            this.assignedDistributor.setInitialBudget(
+                    this.assignedDistributor.getInitialBudget() + lastBillPenalty
+                            + this.price);
+            this.remainedContractMonths--;
+            this.latePayment = 0;
+        }
+    }
+
     /**
      * Make the payment for the consumer.
      */
@@ -83,50 +98,42 @@ public final class ElectricConsumers extends Consumers {
                     Math.floor(Constants.getBILLDIFF() * this.lateBill));
             if (this.oldDistributor != null) {
                 if (this.oldDistributor == this.assignedDistributor) {
+                    /*
+                    The odl distributor is the same as the current one.
+                     */
+                    checkThePayment(lastBillPenalty);
+                    return;
+                } else {
                     if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
-                        this.isBankrupt = true;
-                        this.remainedContractMonths = 0;
+                        if (this.getInitialBudget() - lastBillPenalty < 0) {
+                            /*
+                            Can't afford just the old one.
+                             */
+                            this.isBankrupt = true;
+                            this.remainedContractMonths = 0;
+                        } else {
+                            this.setInitialBudget(this.getInitialBudget() - lastBillPenalty);
+                            this.oldDistributor.setInitialBudget(
+                                    this.oldDistributor.getInitialBudget() + lastBillPenalty);
+                            this.remainedContractMonths--;
+                            this.lateBill = this.price;
+                            return;
+                        }
                     } else {
                         this.setInitialBudget(this.getInitialBudget() - lastBillPenalty
-                        - this.price);
+                                - this.price);
                         this.assignedDistributor.setInitialBudget(
                                 this.assignedDistributor.getInitialBudget() + lastBillPenalty
                                         + this.price);
                         this.remainedContractMonths--;
                         this.latePayment = 0;
+                        return;
                     }
-                } else {
-
                 }
-            }
-            if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
-                /*
-                Can't afford to pay.
-                 */
-                this.isBankrupt = true;
-                this.remainedContractMonths = 0;
-            } else if (this.oldDistributor != null) {
-                /*
-                He has debt to the old distributor, so pay last bill to the old one.
-                 */
-
-                this.oldDistributor.setInitialBudget(this.oldDistributor.getInitialBudget()
-                        + lastBillPenalty);
-                this.assignedDistributor.setInitialBudget(
-                        this.assignedDistributor.getInitialBudget() + this.price);
             } else {
-                /*
-                He has debt to the same distributor and can afford to pay it.
-                 */
-                this.setInitialBudget(this.getInitialBudget() - lastBillPenalty - this.price);
-                this.assignedDistributor.setInitialBudget(
-                        this.assignedDistributor.getInitialBudget() + lastBillPenalty
-                                + this.price);
-                this.remainedContractMonths--;
-                this.latePayment = 0;
-
+                checkThePayment(lastBillPenalty);
+                return;
             }
-            return;
         }
         this.setInitialBudget(this.getInitialBudget() - this.price);
         this.getAssignedDistributor().setInitialBudget(

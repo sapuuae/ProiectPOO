@@ -13,6 +13,15 @@ public class WorkingDistributors extends Distributors {
     private Boolean isBankrupt = false;
     private final ArrayList<ElectricConsumers> distributorConsumers = new ArrayList<>();
     private final ArrayList<Producers> producersArrayList = new ArrayList<>();
+    private Boolean needToUpdate = true;
+
+    public Boolean getNeedToUpdate() {
+        return needToUpdate;
+    }
+
+    public void setNeedToUpdate(Boolean needToUpdate) {
+        this.needToUpdate = needToUpdate;
+    }
 
     public final ArrayList<Producers> getProducersArrayList() {
         return producersArrayList;
