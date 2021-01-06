@@ -76,6 +76,6 @@ public class Producers extends Observer{
                 distributorsArrayList.get(i).setNeedToUpdate(true);
             }
         }
-        actualDistributors = 0;
+//        actualDistributors = 0;
     }
 }
