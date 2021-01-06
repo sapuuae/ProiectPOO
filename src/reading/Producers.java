@@ -68,14 +68,12 @@ public class Producers extends Observer{
     }
 
     @Override
-    public void update(Integer energy, ArrayList<WorkingDistributors> distributorsArrayList) {
+    public void update(Integer energy, ArrayList<WorkingDistributors> distributorsArrayList,
+                       Integer month) {
         this.energyPerDistributor = energy;
-        for (DistributorStats s : monthlyStats) {
-            ArrayList<Integer> idsArray = s.getDistributorsIds();
-            for (Integer i : idsArray) {
-                distributorsArrayList.get(i).setNeedToUpdate(true);
-            }
+        ArrayList<Integer> idsArray = monthlyStats.get(month - 1).getDistributorsIds();
+        for (Integer i : idsArray) {
+            distributorsArrayList.get(i).setNeedToUpdate(true);
         }
-//        actualDistributors = 0;
     }
 }

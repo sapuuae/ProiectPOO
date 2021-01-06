@@ -62,7 +62,8 @@ public final class StoreDataAndTasks {
                     m.getConsumersToWork(), m.getDistributorChanges());
             executeTasks.updateConsumer(consumersList, initialDistributors);
             executeTasks.updateDistributor(initialDistributors);
-            tasks.updateProducers(producersArrayList, m.getProducerChanges(), initialDistributors);
+            tasks.updateProducers(producersArrayList, m.getProducerChanges(),
+                    initialDistributors, count);
             tasks.chooseProducers(initialDistributors, producersArrayList, count++);
         }
 

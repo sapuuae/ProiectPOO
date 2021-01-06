@@ -14,16 +14,17 @@ public class Subject {
     }
 
     public void setState(ArrayList<ProducerChanges> changes,
-                         ArrayList<WorkingDistributors> distributorsArrayList) {
+                         ArrayList<WorkingDistributors> distributorsArrayList,
+                         Integer month) {
         for (ProducerChanges p : changes) {
             producers.add(new ProducersWithEnergy(p.getId(), p.getEnergyPerDistributor()));
         }
-        notifyAllObservers(distributorsArrayList);
+        notifyAllObservers(distributorsArrayList, month);
     }
 
-    public void notifyAllObservers(ArrayList<WorkingDistributors> distributorsArrayList) {
+    public void notifyAllObservers(ArrayList<WorkingDistributors> distributorsArrayList, Integer month) {
         for (ProducersWithEnergy p : producers) {
-            observers.get(p.getId()).update(p.getEnergy(), distributorsArrayList);
+            observers.get(p.getId()).update(p.getEnergy(), distributorsArrayList, month);
         }
     }
 }

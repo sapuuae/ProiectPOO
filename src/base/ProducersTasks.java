@@ -13,13 +13,14 @@ import java.util.Comparator;
 public class ProducersTasks {
     public void updateProducers(final ArrayList<Producers> producersArrayList,
                                 final ArrayList<ProducerChanges> changes,
-                                final ArrayList<WorkingDistributors> distributorsArrayList) {
+                                final ArrayList<WorkingDistributors> distributorsArrayList,
+                                final Integer month) {
         producersArrayList.sort(Comparator.comparing(Producers::getId));
         Subject subject = new Subject();
         for (Producers p : producersArrayList) {
             subject.attach(p);
         }
-        subject.setState(changes, distributorsArrayList);
+        subject.setState(changes, distributorsArrayList, month);
     }
 
     public void chooseProducers(final ArrayList<WorkingDistributors> distributorsArrayList,
@@ -27,16 +28,14 @@ public class ProducersTasks {
                                 final int month) {
         distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getId));
         for (WorkingDistributors d : distributorsArrayList) {
+            ArrayList<Producers> distributorProducers = d.getProducersArrayList();
+            for (Producers p : distributorProducers) {
+                p.getMonthlyStats().get(month).getDistributorsIds().add(d.getId());
+            }
+        }
+        for (WorkingDistributors d : distributorsArrayList) {
             if (!d.getBankrupt()) {
                 if (d.getNeedToUpdate()) {
-//                    producersArrayList.sort(Comparator.comparing(Producers::getId));
-//                    if (month != 0) {
-//                        for (Producers p : producersArrayList) {
-//                            for (Integer i : p.getMonthlyStats().get(month - 1).getDistributorsIds()) {
-//                                p.getMonthlyStats().get(month).getDistributorsIds().add(i);
-//                            }
-//                        }
-//                    }
                     d.setNeedToUpdate(false);
                     ChooseProducerStrategy strategy = ChooseProducerStrategyFactory.createStrategy(
                             d.getProducerStrategy().label, producersArrayList);
@@ -59,7 +58,6 @@ public class ProducersTasks {
                                         p.getEnergyPerDistributor(), p.getPriceKW()));
                                 d.getProducersArrayList().add(p);
                                 p.setActualDistributors(p.getActualDistributors() + 1);
-//                                p.getMonthlyStats().get(month).getDistributorsIds().add(d.getId());
                             }
                         } else {
                             break;
@@ -77,7 +75,13 @@ public class ProducersTasks {
                 }
             }
         }
+
+        for (Producers p : producersArrayList) {
+            p.getMonthlyStats().get(month).getDistributorsIds().clear();
+        }
+
         for (WorkingDistributors d : distributorsArrayList) {
+            producersArrayList.sort(Comparator.comparing(Producers::getId));
             ArrayList<Producers> distributorProducers = d.getProducersArrayList();
             for (Producers p : distributorProducers) {
                 p.getMonthlyStats().get(month).getDistributorsIds().add(d.getId());
