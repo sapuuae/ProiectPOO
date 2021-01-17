@@ -7,7 +7,7 @@ import reading.Producers;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-public class WorkingDistributors extends Distributors {
+public final class WorkingDistributors extends Distributors {
     private Double contractCost = 0.0;
     private Integer numberOfCustomers = 0;
     private Boolean isBankrupt = false;
@@ -23,12 +23,12 @@ public class WorkingDistributors extends Distributors {
         this.needToUpdate = needToUpdate;
     }
 
-    public final ArrayList<Producers> getProducersArrayList() {
+    public ArrayList<Producers> getProducersArrayList() {
         return producersArrayList;
     }
 
     @Override
-    public final void setInitialInfrastructureCost(final Double initialInfrastructureCost) {
+    public void setInitialInfrastructureCost(final Double initialInfrastructureCost) {
         super.setInitialInfrastructureCost(initialInfrastructureCost);
         super.setInitialContractCost(initialInfrastructureCost);
         this.setInfrastructureCost(initialInfrastructureCost);
@@ -36,7 +36,7 @@ public class WorkingDistributors extends Distributors {
     }
 
     @Override
-    public final void setInitialProductionCost(final Double initialProductionCost) {
+    public  void setInitialProductionCost(final Double initialProductionCost) {
         super.setInitialProductionCost(initialProductionCost);
         super.setInitialContractCost(this.getInitialContractCost()
                 + initialProductionCost + Constants.getPROFIT() * initialProductionCost);
@@ -44,22 +44,22 @@ public class WorkingDistributors extends Distributors {
         this.contractCost = this.getInitialContractCost();
     }
 
-    public final Double getContractCost() {
+    public Double getContractCost() {
         return contractCost;
     }
 
-    public final Integer getNumberOfCustomers() {
+    public Integer getNumberOfCustomers() {
         return numberOfCustomers;
     }
 
-    public final void setNumberOfCustomers(final Integer numberOfCustomers) {
+    public void setNumberOfCustomers(final Integer numberOfCustomers) {
         this.numberOfCustomers = numberOfCustomers;
     }
 
     /**
      * Update the contract cost of the distributor, at the beginning of the month.
      */
-    public final void updateContractCost() {
+    public void updateContractCost() {
         if (this.getNumberOfCustomers() != 0) {
             this.contractCost = (double) Math.round(
                     Math.floor(this.getInfrastructureCost() / this.numberOfCustomers)
@@ -84,18 +84,18 @@ public class WorkingDistributors extends Distributors {
                 + this.getProductionCost() * this.numberOfCustomers);
     }
 
-    public final Boolean getBankrupt() {
+    public Boolean getBankrupt() {
         return isBankrupt;
     }
 
-    public final ArrayList<ElectricConsumers> getDistributorConsumers() {
+    public ArrayList<ElectricConsumers> getDistributorConsumers() {
         return distributorConsumers;
     }
 
     /**
      * Make the payment for the distributor and check if it's bankrupt.
      */
-    public final void updateBudget() {
+    public void updateBudget() {
         if (numberOfCustomers == 0) {
             this.setInitialBudget(this.getInitialBudget() - this.getInfrastructureCost());
         } else {

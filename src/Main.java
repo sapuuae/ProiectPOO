@@ -15,8 +15,6 @@ public final class Main {
      */
     public static void main(final String[] args) throws Exception {
         File in = new File(args[0]);
-//        File in = new File("complex_5.json");
-//        File out = new File("out.json");
         File out = new File(args[1]);
         StoreDataAndTasks storeDataAndTasks = new StoreDataAndTasks();
         storeDataAndTasks.checkFile(in, out);

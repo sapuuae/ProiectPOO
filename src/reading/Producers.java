@@ -6,7 +6,7 @@ import observer.Observer;
 
 import java.util.ArrayList;
 
-public class Producers extends Observer{
+public final class Producers extends Observer {
     private Integer id;
     private EnergyType energyType;
     private Integer maxDistributors;

@@ -5,7 +5,7 @@ import reading.Producers;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class GreenStrategy implements ChooseProducerStrategy{
+public final class GreenStrategy implements ChooseProducerStrategy {
     private final ArrayList<Producers> producersArrayList;
 
     public GreenStrategy(ArrayList<Producers> producersArrayList) {
@@ -19,7 +19,8 @@ public class GreenStrategy implements ChooseProducerStrategy{
          */
         producersArrayList.sort(Comparator.comparing(Producers::getId));
         producersArrayList.sort((o1, o2) -> {
-            int c = Boolean.compare(o2.getEnergyType().isRenewable(), o1.getEnergyType().isRenewable());
+            int c = Boolean.compare(o2.getEnergyType().isRenewable(),
+                    o1.getEnergyType().isRenewable());
             if (c == 0) {
                 /*
                 Sort them by price then.

@@ -61,6 +61,10 @@ public final class ElectricConsumers extends Consumers {
         this.oldDistributor = oldDistributor;
     }
 
+    /**
+     * Used to see if a consumer can pay in the actual month.
+     * @param lastBillPenalty last month bill
+     */
     public void checkThePayment(Double lastBillPenalty) {
         if (this.getInitialBudget() - lastBillPenalty - this.price < 0) {
             this.isBankrupt = true;

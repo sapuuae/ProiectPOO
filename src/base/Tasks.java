@@ -1,11 +1,6 @@
 package base;
 
-import observer.Subject;
 import reading.CostsChanges;
-import reading.ProducerChanges;
-import reading.Producers;
-import strategies.ChooseProducerStrategy;
-import strategies.ChooseProducerStrategyFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;

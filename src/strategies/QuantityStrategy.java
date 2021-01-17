@@ -5,7 +5,7 @@ import reading.Producers;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuantityStrategy implements ChooseProducerStrategy{
+public final class QuantityStrategy implements ChooseProducerStrategy {
     private final ArrayList<Producers> producersArrayList;
 
     public QuantityStrategy(ArrayList<Producers> producersArrayList) {

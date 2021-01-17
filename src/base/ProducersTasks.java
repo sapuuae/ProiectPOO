@@ -10,7 +10,14 @@ import strategies.ChooseProducerStrategyFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class ProducersTasks {
+public final class ProducersTasks {
+    /**
+     * Used to update the energy given by a producer.
+     * @param producersArrayList the array producers
+     * @param changes new energy values
+     * @param distributorsArrayList the array of distributors
+     * @param month current month
+     */
     public void updateProducers(final ArrayList<Producers> producersArrayList,
                                 final ArrayList<ProducerChanges> changes,
                                 final ArrayList<WorkingDistributors> distributorsArrayList,
@@ -23,6 +30,12 @@ public class ProducersTasks {
         subject.setState(changes, distributorsArrayList, month);
     }
 
+    /**
+     * Used to select a producer for a distributor.
+     * @param distributorsArrayList the array of distributors
+     * @param producersArrayList the array of producers
+     * @param month current month
+     */
     public void chooseProducers(final ArrayList<WorkingDistributors> distributorsArrayList,
                                 final ArrayList<Producers> producersArrayList,
                                 final int month) {
@@ -53,7 +66,8 @@ public class ProducersTasks {
                     for (Producers p : producersArrayList) {
                         if (d.getTotalEnergyNow() < d.getEnergyNeededKW()) {
                             if (p.getActualDistributors() < p.getMaxDistributors()) {
-                                d.setTotalEnergyNow(d.getTotalEnergyNow() + p.getEnergyPerDistributor());
+                                d.setTotalEnergyNow(d.getTotalEnergyNow()
+                                        + p.getEnergyPerDistributor());
                                 d.getActualEnergyList().add(new EnergyAndPrice(
                                         p.getEnergyPerDistributor(), p.getPriceKW()));
                                 d.getProducersArrayList().add(p);

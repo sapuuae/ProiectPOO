@@ -14,7 +14,9 @@ public final class DistributorsToWrite {
     private final Boolean isBankrupt;
     private final ArrayList<ConsumersToWriteInDistributors> contracts;
 
-    public DistributorsToWrite(Integer id, Integer energyNeededKW, Integer contractCost, Integer budget, String producerStrategy, Boolean isBankrupt, ArrayList<ConsumersToWriteInDistributors> contracts) {
+    public DistributorsToWrite(Integer id, Integer energyNeededKW, Integer contractCost,
+                               Integer budget, String producerStrategy, Boolean isBankrupt,
+                               ArrayList<ConsumersToWriteInDistributors> contracts) {
         this.id = id;
         this.energyNeededKW = energyNeededKW;
         this.contractCost = contractCost;

@@ -1,6 +1,6 @@
 package base;
 
-public class EnergyAndPrice {
+public final class EnergyAndPrice {
     private final Integer energy;
     private final Double price;
 

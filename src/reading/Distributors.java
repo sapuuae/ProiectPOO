@@ -17,37 +17,61 @@ public class Distributors {
     private Double totalCosts = 0.0;
     private Integer energyNeededKW;
     private EnergyChoiceStrategyType producerStrategy;
-    private ArrayList<EnergyAndPrice> actualEnergyList = new ArrayList<>();
+    private final ArrayList<EnergyAndPrice> actualEnergyList = new ArrayList<>();
     private Integer totalEnergyNow;
 
+    /**
+     * Used to get actual energy gotten by distributor.
+     * @return the value of energy
+     */
     public Integer getTotalEnergyNow() {
         return totalEnergyNow;
     }
 
+    /**
+     * Used to update the new energy gotten.
+     * @param totalEnergyNow new value of energy
+     */
     public void setTotalEnergyNow(Integer totalEnergyNow) {
         this.totalEnergyNow = totalEnergyNow;
     }
 
+    /**
+     * Get the list with energy from producers.
+     * @return the list with energy values
+     */
     public ArrayList<EnergyAndPrice> getActualEnergyList() {
         return actualEnergyList;
     }
 
-    public void setActualEnergyList(ArrayList<EnergyAndPrice> actualEnergyList) {
-        this.actualEnergyList = actualEnergyList;
-    }
-
+    /**
+     * Get the strategy searched by distributor.
+     * @return the strategy
+     */
     public EnergyChoiceStrategyType getProducerStrategy() {
         return producerStrategy;
     }
 
+    /**
+     * Set the strategy searched.
+     * @param producerStrategy the strategy to be set
+     */
     public void setProducerStrategy(EnergyChoiceStrategyType producerStrategy) {
         this.producerStrategy = producerStrategy;
     }
 
+    /**
+     * Get the energy needed by distributor.
+     * @return the energy needed
+     */
     public Integer getEnergyNeededKW() {
         return energyNeededKW;
     }
 
+    /**
+     * Used for reading the energy needed.
+     * @param energyNeededKW the energy to be set
+     */
     public void setEnergyNeededKW(Integer energyNeededKW) {
         this.energyNeededKW = energyNeededKW;
     }
@@ -107,10 +131,6 @@ public class Distributors {
 
     public final Double getInitialInfrastructureCost() {
         return initialInfrastructureCost;
-    }
-
-    public final Double getInitialProductionCost() {
-        return initialProductionCost;
     }
 
     public final void setId(final Integer id) {

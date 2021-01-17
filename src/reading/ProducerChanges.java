@@ -1,6 +1,6 @@
 package reading;
 
-public class ProducerChanges {
+public final class ProducerChanges {
     private Integer id;
     private Integer energyPerDistributor;
 

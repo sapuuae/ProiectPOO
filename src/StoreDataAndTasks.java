@@ -4,7 +4,11 @@ import base.ElectricConsumers;
 import base.WorkingDistributors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import factory.CreateElectricConsumers;
-import reading.*;
+import reading.Consumers;
+import reading.DistributorStats;
+import reading.Input;
+import reading.MonthlyUpdates;
+import reading.Producers;
 import writing.WriteInJson;
 
 import java.io.File;
