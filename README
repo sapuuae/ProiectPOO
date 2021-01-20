@@ -1,0 +1,28 @@
+Sapunaru Andrei, 321CA
+
+
+Am utilizat tot Jackson, asemenea etapei precendete, pentru scrierea/citirea in/din fisier.
+Am folosit, drept design patterns, Observer, Factory, Singleton si Strategy.
+
+        * In observer, am folosit, drept observer, producatorii, iar observable, sistemul de lucru. De
+        fiecare data cand se actualiza energia data de fiecare producator distribuitorilor, notificam
+        producatorii. De asemenea, am adaugat si un flag in clasa distribuitorilor (needToUpdate), care
+        sa reflecte daca acesta trebuie sa caute din nou producatori.
+
+        * Pentru a sorta producatorii in functie de cerintele fiecarui distribuitor, am folosit Strategy
+        pattern, creand cate o strategie pentru fiecare tip cautat de distribuitor (GREEN, PRICE si
+        QUANTITY). De asemenea, in cadrul functiei care creeaza instanta specifica, am utilizat Factory,
+        verificand strategia data de fiecare distribuitor si returnand o instanta corespunzatoare.
+        La inceputul metodei din cadrul fiecarei strategii cautate, a trebuit sa sortez producatorii
+        dupa id, intrucat ordinea acestora se schimba la finalul fiecarui apel al metodei respective.
+
+        * Singleton l-am utilizat in clasa care avea metodele pentru executarea de plati lunare, update-uri
+        la consumatori/distribuitori.
+
+Ordinea in care se executa operatiile este cea precizata in enunt. In runda 0, setez costul de productie pentru
+fiecare producator, apoi aleg contracte pentru consumatori, fiecare consumator facand si plata. La finalul
+acestei luni, distributiorii isi platesc costurile totale. In urmatoarele luni, la inceputul fiecareia adaug
+noii consumatori si modific costul de infrastructura al distribuitorilor, consumatorii care nu au contracte
+isi aleg, platesc, platesc si distribuitorii, urmand ca pentru a actualiza energia data de fiecare producator
+distribuitorilor sa folosesc observer.
+    Toate operatiile se fac in clasa StoreDataAndTasks.

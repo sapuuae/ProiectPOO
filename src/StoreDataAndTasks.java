@@ -58,6 +58,7 @@ public final class StoreDataAndTasks {
         Tasks executeTasks = Tasks.getInstance();
         executeTasks.updateConsumer(consumersList, initialDistributors);
         executeTasks.updateDistributor(initialDistributors);
+
         /*
         Iterate through numberOfTurns (size of monthlyUpdates)
          */
