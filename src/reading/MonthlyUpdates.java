@@ -7,7 +7,18 @@ import java.util.ArrayList;
 public final class MonthlyUpdates {
     private ArrayList<Consumers> newConsumers;
     private final ArrayList<ElectricConsumers> consumersToWork = new ArrayList<>();
-    private ArrayList<CostsChanges> costsChanges;
+    private ArrayList<CostsChanges> distributorChanges;
+    private ArrayList<ProducerChanges> producerChanges;
+
+
+
+    public ArrayList<ProducerChanges> getProducerChanges() {
+        return producerChanges;
+    }
+
+    public void setProducerChanges(ArrayList<ProducerChanges> producerChanges) {
+        this.producerChanges = producerChanges;
+    }
 
     public ArrayList<Consumers> getNewConsumers() {
         return newConsumers;
@@ -17,12 +28,12 @@ public final class MonthlyUpdates {
         this.newConsumers = newConsumers;
     }
 
-    public ArrayList<CostsChanges> getCostsChanges() {
-        return costsChanges;
+    public ArrayList<CostsChanges> getDistributorChanges() {
+        return distributorChanges;
     }
 
-    public void setCostsChanges(final ArrayList<CostsChanges> costsChanges) {
-        this.costsChanges = costsChanges;
+    public void setDistributorChanges(final ArrayList<CostsChanges> distributorChanges) {
+        this.distributorChanges = distributorChanges;
     }
 
     public ArrayList<ElectricConsumers> getConsumersToWork() {
