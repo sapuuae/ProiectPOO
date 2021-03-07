@@ -40,7 +40,6 @@ public final class Tasks {
              */
             WorkingDistributors currentDistributor = distributorsArrayList.get(c.getId());
             currentDistributor.setInfrastructureCost(c.getInfrastructureCost());
-            currentDistributor.setProductionCost(c.getProductionCost());
         }
         for (WorkingDistributors d : distributorsArrayList) {
             d.updateContractCost();
@@ -106,11 +105,11 @@ public final class Tasks {
      * @param distributorsArrayList the list of distributors
      */
     public void updateDistributor(final ArrayList<WorkingDistributors> distributorsArrayList) {
+        distributorsArrayList.sort(Comparator.comparing(WorkingDistributors::getId));
         for (WorkingDistributors d : distributorsArrayList) {
             if (!d.getBankrupt()) {
                 d.updateBudget();
             }
         }
     }
-
 }
